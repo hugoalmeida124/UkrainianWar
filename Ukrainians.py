@@ -63,3 +63,9 @@ class Ukrainian:
             if bullet.x_position < 0 or bullet.x_position > Window.WIDTH:
                 self.__bullets.remove(bullet)
                 print(self.__bullets)
+
+    def hits(self, russian):
+        for bullet in self.__bullets:
+            if bullet.colides_with(russian):
+                self.__bullets.remove(bullet)
+                return True

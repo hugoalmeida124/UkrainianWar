@@ -5,6 +5,7 @@ import Buttons
 from Configs import *
 from Buttons import Button
 from Ukrainians import Ukrainian
+from Russians import Russian
 
 pygame.init()
 screen = pygame.display.set_mode([Window.WIDTH, Window.HEIGHT])
@@ -19,6 +20,7 @@ button_play = Button(100, 200, Buttons.BUTTON_GREEN)
 button_exit = Button(300, 200, Buttons.BUTTON_RED)
 button_restart = Button(380, 307, Buttons.BUTTON_GREEN)
 ukrainian = Ukrainian(100, 645)
+russians = Russian()
 
 view = "inicial"  # Tela de jogo
 
@@ -66,8 +68,17 @@ while run:
         elif key[pygame.K_DOWN]:
             ukrainian.move('down')
 
+        russians.generate_russian()
+        russians.draw_all(screen)
+        russians.move()
+
         ukrainian.draw(screen)
+
+        if ukrainian.hits(russians):
+            russians.took_shot(russians)
+
         ukrainian.is_out()
+        russians.show_count(screen)
 
     pygame.display.update()
 
