@@ -22,7 +22,7 @@ class Img:
 
 
 class Sound:
-    AMBIENCE = pygame.mixer.Sound("sounds/background_sound.wav")
+    AMBIENCE = pygame.mixer.Sound("sounds/background_sound.mp3")
     GUN_SHOT = pygame.mixer.Sound("sounds/gun_shoot.ogg")
     GAME_OVER = pygame.mixer.Sound("sounds/game_over.wav")
 

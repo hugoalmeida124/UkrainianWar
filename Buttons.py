@@ -1,5 +1,5 @@
 import pygame
-from configs import *
+from Configs import *
 
 BUTTON_RED = pygame.image.load("imgs/red_button.png")
 BUTTON_BLUE = pygame.image.load("imgs/blue_button.png")

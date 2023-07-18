@@ -2,8 +2,9 @@ import pygame
 from pygame.locals import *
 
 import Buttons
-from configs import *
+from Configs import *
 from Buttons import Button
+from Ukrainians import Ukrainian
 
 pygame.init()
 screen = pygame.display.set_mode([Window.WIDTH, Window.HEIGHT])
@@ -17,7 +18,9 @@ Sound.AMBIENCE.set_volume(0.10)
 button_play = Button(100, 200, Buttons.BUTTON_GREEN)
 button_exit = Button(300, 200, Buttons.BUTTON_RED)
 button_restart = Button(380, 307, Buttons.BUTTON_GREEN)
-view = "inicial"
+ukrainian = Ukrainian(100, 645)
+
+view = "inicial"  # Tela de jogo
 
 run = True
 while run:
@@ -29,20 +32,24 @@ while run:
             run = False
             break
         elif event.type == MOUSEBUTTONDOWN:
-            if event.button == 1:  # Botão esquerdo do mouse
+            if event.button == 1:  # Botã
+                # o esquerdo do mouse
                 mouse_pos = pygame.mouse.get_pos()
                 if button_play.rect.collidepoint(mouse_pos):
                     # Código para mudar para a tela de jogo quando o botão Play for clicado
                     print("Botão Play clicado!")
-                    tela = "jogo"
+                    view = "jogo"
                 elif button_exit.rect.collidepoint(mouse_pos):
                     # Código para mudar para sair do jogo quando o botão Exit for clicado
                     run = False
                     print("Botão Exit clicado!")
                     break
                 elif button_restart.rect.collidepoint(mouse_pos):
-                    #COLOCAR OS RESET
-                    tela = "jogo"
+                    # COLOCAR OS RESET
+                    view = "jogo"
+        elif event.type == KEYDOWN:
+            if event.key == K_SPACE:
+                ukrainian.shoot(screen)
 
     if view == "inicial":
         button_play.draw(screen)
@@ -50,6 +57,17 @@ while run:
         text = Font.MAIN_FONT.render(F"UKRAINIAN WAR", True, [255, 255, 255], None)
         screen.blit(text, (200, 100))
     elif view == "jogo":
+
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
+            ukrainian.move('left')
+        elif key[pygame.K_RIGHT]:
+            ukrainian.move('right')
+        elif key[pygame.K_DOWN]:
+            ukrainian.move('down')
+
+        ukrainian.draw(screen)
+        ukrainian.is_out()
 
     pygame.display.update()
 
