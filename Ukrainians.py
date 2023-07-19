@@ -27,10 +27,13 @@ class Ukrainian:
         elif direction == 'down':
             self.__y = 690
             self.__img = Img.UKRAINIAN_DOWN
+        elif direction == 'up':
+            self.__y = self.__initial_y
+            self.__img = Img.UKRAINIAN_RIGHT
 
-    def shoot(self, surface):
+    def shoot(self):
         print(self.__direction)
-        if self.__direction == 'right':
+        if self.__direction == 'right' or self.__direction == 'up':
             bullet = Bullet(self.__x + 118, self.__y + 24, "right")
             self.__bullets.append(bullet)
             Sound.GUN_SHOT.play(loops=0)
@@ -69,3 +72,10 @@ class Ukrainian:
             if bullet.colides_with(russian):
                 self.__bullets.remove(bullet)
                 return True
+
+    def limit_boundaries(self):
+        if self.__x < 0:
+            self.__x = 0
+
+        if self.__x > Window.WIDTH:
+            self.__x = Window.WIDTH

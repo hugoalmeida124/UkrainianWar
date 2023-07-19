@@ -27,10 +27,10 @@ class Button:
         janela.blit(self.img, (self.x, self.y))
         if self.img == BUTTON_GREEN:
             text = Font.MAIN_FONT.render(F"PLAY", True, [255, 255, 255], None)
-            janela.blit(text, (145, 207))
+            janela.blit(text, (715, 310))
         elif self.img == BUTTON_RED:
             text = Font.MAIN_FONT.render(F"EXIT", True, [255, 255, 255], None)
-            janela.blit(text, (345, 207))
+            janela.blit(text, (720, 460))
         elif self.img == BUTTON_BLUE:
             text = Font.MAIN_FONT.render(F"RESTART", True, [255, 255, 255], None)
             janela.blit(text, (400, 313))
