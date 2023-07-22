@@ -20,12 +20,12 @@ Sound.AMBIENCE.set_volume(0.10)
 
 button_play = Button(600, 300, Buttons.BUTTON_GREEN)
 button_exit = Button(605, 450, Buttons.BUTTON_RED)
-button_restart = Button(650, 400, Buttons.BUTTON_GREEN)
+button_restart = Button(650, 400, Buttons.BUTTON_BLUE)
 ukrainian = Ukrainian(100, 645)
 russians = Russian()
 hearts = Lives()
 
-view = "inicial"  # Tela de jogo
+view = "jogo"  # Tela de jogo
 
 run = True
 while run:
@@ -59,6 +59,10 @@ while run:
                     break
                 elif button_restart.rect.collidepoint(mouse_pos):
                     # COLOCAR OS RESET
+                    ukrainian.reset()
+                    russians.reset()
+                    hearts.reset()
+
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
                     view = "jogo"
@@ -120,7 +124,8 @@ while run:
 
     elif view == "gameover":
         text = Font.MAIN_FONT.render(F"GAMEOVER", True, [255, 255, 255], None)
-        screen.blit(text, (780, 395))
+        screen.blit(text, (600, 200))
+        button_restart.draw(screen)
 
     pygame.display.update()
 

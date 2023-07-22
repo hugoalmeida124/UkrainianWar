@@ -6,6 +6,7 @@ from Bullet import Bullet
 class Ukrainian:
     def __init__(self, x, y):
         self.__x = x
+        self.__initial_x = x
         self.__y = y
         self.__initial_y = y
         self.__speed = 5
@@ -46,9 +47,9 @@ class Ukrainian:
             bullet.move()
             bullet.draw(surface)
 
-    def reset(self, x, y):
-        self.__x = x
-        self.__y = y
+    def reset(self):
+        self.__x = self.__initial_x
+        self.__y = self.__initial_y
         self.__img = Img.UKRAINIAN_RIGHT
 
     def get_overlaping_area(self, image, offset_x, offset_y):
