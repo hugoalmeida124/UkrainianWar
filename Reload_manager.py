@@ -7,7 +7,7 @@ import random
 class Reload_manager:
     def __init__(self):
         self.__bullets = []
-        self.__score = 0
+        self.__score = 3
         self.new_bullets()
 
     def get_score(self):
@@ -29,6 +29,8 @@ class Reload_manager:
             if bullet.colides_with(ukrainian):
                 self.__bullets.remove(bullet)
                 self.__score += 1
+                Sound.RELOAD.play(loops=0)
+                Sound.RELOAD.set_volume(0.40)
 
     def new_bullets(self):
         if self.__bullets:

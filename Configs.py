@@ -31,8 +31,10 @@ class Sound:
     HIT = pygame.mixer.Sound("sounds/hit.flac")
     HIT_2 = pygame.mixer.Sound("sounds/hit2.mp3.flac")
     MENU_CLICK = pygame.mixer.Sound("sounds/menu_click.wav")
+    LVL_UP = pygame.mixer.Sound("sounds/LVL_UP.mp3")
+    RELOAD = pygame.mixer.Sound("sounds/RELOAD.ogg")
 
 
 class Font:
-    MAIN_FONT = pygame.font.Font("fonts/2d_font.otf", 90)
-    SECOND_FONT = pygame.font.Font("fonts/font.ttf", 30)
+    MAIN_FONT = pygame.font.Font("fonts/Capture.ttf", 70)
+    SECOND_FONT = pygame.font.Font("fonts/Capture.ttf", 30)

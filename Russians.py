@@ -20,7 +20,6 @@ class Russian:
         self.__shooted_bullets = 0
         self.time_next_shot = 0
 
-    @property
     def get_score(self):
         return self.__deaths
 
@@ -33,7 +32,6 @@ class Russian:
                 if self.__total_frames < 100:
                     self.__total_frames += 1
                     russian.__x -= self.__speed
-                    print("Andando...")
                 else:
                     self.__walking = False
                     self.__total_frames = 0
@@ -70,13 +68,27 @@ class Russian:
                 self.__bullets.remove(bullet)
                 return True
 
-    def generate_russian(self):
+    def generate_russian(self, lvl):
         if self.__russians:  # se o valor da lista for maior que 0 é porque tem e então nao retorna nada
             return True
 
-        for x in range(2):
+        for x in range(lvl):
             russian = Russian()
             self.__russians.append(russian)
+
+    def level_up(self):
+        if self.__deaths == 5:
+            return int(time.time()) % 5 == 0
+        if self.__deaths == 10:
+            return int(time.time()) % 5 == 0
+        if self.__deaths == 20:
+            return int(time.time()) % 5 == 0
+        if self.__deaths == 30:
+            return int(time.time()) % 5 == 0
+        if self.__deaths == 40:
+            return int(time.time()) % 5 == 0
+        if self.__deaths == 50:
+            return int(time.time()) % 5 == 0
 
     def draw(self, surface):
         surface.blit(self.__img, [self.__x, self.__y])
@@ -112,7 +124,7 @@ class Russian:
     def reset(self):
         self.__deaths = 0
         self.__russians.clear()
-        self.generate_russian()
+        self.generate_russian(1)
 
     def limit_boundaries(self):
         if self.__x < 0:

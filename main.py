@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 import Buttons
+import time
 from Configs import *
 from Buttons import Button
 from Ukrainians import Ukrainian
@@ -23,6 +24,7 @@ button_exit = Button(605, 450, Buttons.BUTTON_RED)
 button_restart = Button(520, 400, Buttons.BUTTON_BLUE)
 ukrainian = Ukrainian(100, 645)
 ukrainian_shoot = False
+lvl_up = False
 russians = Russian()
 reload = Reload_manager()
 
@@ -83,6 +85,43 @@ while run:
     elif view == 2:
         screen.blit(Img.BACKGROUND_GAME, [0, 0])  # BACKGROUND
 
+        deaths = russians.get_score()
+        if deaths < 5:  # lvl1
+            text = Font.MAIN_FONT.render(F"Level 1", True, [255, 255, 255], None)
+            screen.blit(text, (650, 50))
+            russians.generate_russian(1)
+
+        elif deaths < 10:  # lvl2
+            text = Font.MAIN_FONT.render(F"LEVEL 2", True, [255, 255, 255], None)
+            screen.blit(text, (650, 50))
+            russians.generate_russian(2)
+            if deaths == 9:
+                lvl_up = False
+
+        elif deaths < 20:  # lvl3
+            text = Font.MAIN_FONT.render(F"LEVEL 3", True, [255, 255, 255], None)
+            screen.blit(text, (650, 50))
+            russians.generate_russian(3)
+            if deaths == 19:
+                lvl_up = False
+
+        elif deaths < 30:  # lvl4
+            text = Font.MAIN_FONT.render(F"LEVEL 4", True, [255, 255, 255], None)
+            screen.blit(text, (650, 50))
+            russians.generate_russian(4)
+            if deaths == 29:
+                lvl_up = False
+
+        elif deaths < 50:  # lvl5
+            text = Font.MAIN_FONT.render(F"LEVEL 4", True, [255, 255, 255], None)
+            screen.blit(text, (650, 50))
+            russians.generate_russian(5)
+
+        if not lvl_up and russians.level_up():  # tocar som de lvlup
+            Sound.LVL_UP.play(maxtime=3000)
+            Sound.LVL_UP.set_volume(0.20)
+            lvl_up = True
+
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             ukrainian.move('left')
@@ -94,7 +133,6 @@ while run:
             ukrainian.move('up')
 
         # russians
-        russians.generate_russian()
         russians.move()
         russians.shoot()
         russians.draw_all(screen)
@@ -113,7 +151,7 @@ while run:
         reload.show_count(screen)
 
         score = reload.get_score()
-        if score == 0:
+        if score == 0:  # reload nas balas apos disparar as 3
             reload.new_bullets()
 
         if russians.hits(ukrainian):
@@ -125,16 +163,19 @@ while run:
             russians.took_shot()
             Sound.HIT_2.play(loops=0)
             Sound.HIT_2.set_volume(0.10)
-            print("Colisao")
 
         if ukrainian.no_more_hearts():
             view = 3
             Sound.GAME_OVER.play(loops=0)
             Sound.GAME_OVER.set_volume(0.10)
 
+        pygame.display.update()
+
     elif view == 3:
         text = Font.MAIN_FONT.render(F"GAMEOVER", True, [255, 255, 255], None)
-        screen.blit(text, (650, 200))
+        screen.blit(text, (640, 200))
+        text2 = Font.SECOND_FONT.render(F"HIGHEST SCORE: {russians.get_score()}", True, [255, 255, 255], None)
+        screen.blit(text2, (700, 350))
         button_restart.draw(screen)
 
     pygame.display.update()

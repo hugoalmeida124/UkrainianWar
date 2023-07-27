@@ -30,10 +30,10 @@ class Button:
             janela.blit(text, (715, 310))
         elif self.img == BUTTON_RED:
             text = Font.MAIN_FONT.render(F"EXIT", True, [255, 255, 255], None)
-            janela.blit(text, (720, 460))
+            janela.blit(text, (725, 460))
         elif self.img == BUTTON_BLUE:
             text = Font.MAIN_FONT.render(F"RESTART", True, [255, 255, 255], None)
-            janela.blit(text, (690, 410))
+            janela.blit(text, (680, 410))
 
     def collide(self, pos):
         return self.rect.collidepoint(pos)
