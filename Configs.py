@@ -18,6 +18,7 @@ class Img:
     UKRAINIAN_DOWN = pygame.image.load("imgs/duck_soldier.png")
     RUSSIAN = pygame.image.load("imgs/russian.png")
     HEART = pygame.image.load("imgs/heart.png")
+    BULLET_RECHARGE = pygame.image.load("imgs/bullet2.png")
     BULLET_RIGHT = pygame.image.load("imgs/bullet.png")
     BULLET_LEFT = pygame.transform.flip(BULLET_RIGHT, True, False)
 

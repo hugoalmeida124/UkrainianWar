@@ -1,6 +1,7 @@
 import pygame
 from Configs import *
 from Bullet import Bullet
+from Reload_manager import Reload_manager
 
 
 class Ukrainian:
@@ -13,6 +14,7 @@ class Ukrainian:
         self.__img = Img.UKRAINIAN_RIGHT
         self.__bullets = []
         self.__direction = 'right'
+        self.__hearts = 3
 
     def move(self, direction):
         self.__direction = direction
@@ -33,7 +35,6 @@ class Ukrainian:
             self.__img = Img.UKRAINIAN_RIGHT
 
     def shoot(self):
-        print(self.__direction)
         if self.__direction == 'right' or self.__direction == 'up':
             bullet = Bullet(self.__x + 118, self.__y + 24, "right")
             self.__bullets.append(bullet)
@@ -43,6 +44,13 @@ class Ukrainian:
     def draw(self, surface):
         surface.blit(self.__img, [self.__x, self.__y])
 
+        if self.__hearts >= 1:
+            surface.blit(Img.HEART, [1500, 20])  # 1
+            if self.__hearts >= 2:
+                surface.blit(Img.HEART, [1520, 20])  # 2
+                if self.__hearts == 3:
+                    surface.blit(Img.HEART, [1540, 20])  # 3
+
         for bullet in self.__bullets:
             bullet.move()
             bullet.draw(surface)
@@ -51,6 +59,8 @@ class Ukrainian:
         self.__x = self.__initial_x
         self.__y = self.__initial_y
         self.__img = Img.UKRAINIAN_RIGHT
+        self.__hearts = 3
+        self.__bullets.clear()
 
     def get_overlaping_area(self, image, offset_x, offset_y):
         self_mask = pygame.mask.from_surface(self.__img)
@@ -80,3 +90,14 @@ class Ukrainian:
 
         if self.__x > Window.WIDTH:
             self.__x = Window.WIDTH
+
+    # hearts
+    @property
+    def hearts(self):
+        return self.__hearts
+
+    def lose_hearts(self):
+        self.__hearts -= 1
+
+    def no_more_hearts(self):
+        return self.__hearts == 0

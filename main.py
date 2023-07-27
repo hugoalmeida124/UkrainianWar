@@ -7,7 +7,7 @@ from Buttons import Button
 from Ukrainians import Ukrainian
 from Russians import Russian
 from Bullet import Bullet
-from Hearts import Lives
+from Reload_manager import Reload_manager
 
 pygame.init()
 screen = pygame.display.set_mode([Window.WIDTH, Window.HEIGHT])
@@ -20,12 +20,13 @@ Sound.AMBIENCE.set_volume(0.10)
 
 button_play = Button(600, 300, Buttons.BUTTON_GREEN)
 button_exit = Button(605, 450, Buttons.BUTTON_RED)
-button_restart = Button(650, 400, Buttons.BUTTON_BLUE)
+button_restart = Button(520, 400, Buttons.BUTTON_BLUE)
 ukrainian = Ukrainian(100, 645)
+ukrainian_shoot = False
 russians = Russian()
-hearts = Lives()
+reload = Reload_manager()
 
-view = "jogo"  # Tela de jogo
+view = 1  # Tela de jogo
 
 run = True
 while run:
@@ -44,7 +45,7 @@ while run:
                 if button_play.rect.collidepoint(mouse_pos):
                     # Código para mudar para a tela de jogo quando o botão Play for clicado
                     print("Botão Play clicado!")
-                    view = "jogo"
+                    view = 2
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
 
@@ -59,24 +60,27 @@ while run:
                     break
                 elif button_restart.rect.collidepoint(mouse_pos):
                     # COLOCAR OS RESET
+                    print("restart cliclado")
                     ukrainian.reset()
                     russians.reset()
-                    hearts.reset()
+                    reload.reset()
 
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
-                    view = "jogo"
+                    view = 2
         elif event.type == KEYDOWN:
-            if event.key == K_SPACE:
+            score = reload.get_score()
+            if event.key == K_SPACE and score > 0:
                 ukrainian.shoot()
+                reload.lose_score()
 
-    if view == "inicial":
+    if view == 1:
         button_play.draw(screen)
         button_exit.draw(screen)
         text = Font.MAIN_FONT.render(F"UKRAINIAN WAR", True, [255, 255, 255], None)
         screen.blit(text, (560, 100))
 
-    elif view == "jogo":
+    elif view == 2:
         screen.blit(Img.BACKGROUND_GAME, [0, 0])  # BACKGROUND
 
         key = pygame.key.get_pressed()
@@ -89,25 +93,31 @@ while run:
         elif key[pygame.K_UP]:
             ukrainian.move('up')
 
+        # russians
         russians.generate_russian()
-        # russians.start_moving()  # true começar a andar
-
         russians.move()
         russians.shoot()
         russians.draw_all(screen)
-
         russians.limit_boundaries()
         russians.is_out()
         russians.show_count(screen)
 
+        # ukrainians
         ukrainian.limit_boundaries()
         ukrainian.draw(screen)
         ukrainian.is_out()
 
-        hearts.draw(screen)
+        # reload_manager
+        reload.draw_all(screen)
+        reload.feed(ukrainian)
+        reload.show_count(screen)
+
+        score = reload.get_score()
+        if score == 0:
+            reload.new_bullets()
 
         if russians.hits(ukrainian):
-            hearts.lose()
+            ukrainian.lose_hearts()
             Sound.HIT.play(loops=0)
             Sound.HIT.set_volume(0.10)
 
@@ -117,14 +127,14 @@ while run:
             Sound.HIT_2.set_volume(0.10)
             print("Colisao")
 
-        if hearts.no_more():
-            view = "gameover"
+        if ukrainian.no_more_hearts():
+            view = 3
             Sound.GAME_OVER.play(loops=0)
             Sound.GAME_OVER.set_volume(0.10)
 
-    elif view == "gameover":
+    elif view == 3:
         text = Font.MAIN_FONT.render(F"GAMEOVER", True, [255, 255, 255], None)
-        screen.blit(text, (600, 200))
+        screen.blit(text, (650, 200))
         button_restart.draw(screen)
 
     pygame.display.update()

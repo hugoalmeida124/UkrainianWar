@@ -3,6 +3,7 @@ from Configs import *
 from Bullet import Bullet
 import random
 import time
+import math
 
 
 class Russian:
@@ -41,9 +42,9 @@ class Russian:
         # fazer com que disparem um numero random de tiros entre 5 a 10 tiros e depois de dispararem,
         # passar o self.__walking para True
         for russian in self.__russians:
-            if not self.__walking: # se nao estiver a andar não avançar
-                actual_time = time.time() #função tempo
-                if self.__shooted_bullets < 5: # se forem disparadas menos de 5 balas continuar a disparar
+            if not self.__walking:  # se nao estiver a andar não avançar
+                actual_time = time.time()  # função tempo
+                if self.__shooted_bullets < 5:  # se forem disparadas menos de 5 balas continuar a disparar
                     if actual_time >= self.time_next_shot:
                         shoot_interval = random.uniform(0, 2)  # intervalo aleatorio
                         self.time_next_shot = actual_time + shoot_interval
@@ -53,7 +54,7 @@ class Russian:
                         Sound.GUN_SHOT.play(loops=0)
                         Sound.GUN_SHOT.set_volume(0.30)
                         print(self.__shooted_bullets)
-                else: #se ja forem disparadas as 5 balas
+                else:  # se ja forem disparadas as 5 balas
                     self.__shooted_bullets = 0
                     self.__walking = True
 
@@ -63,7 +64,7 @@ class Russian:
                 self.__bullets.remove(bullet)
                 print(self.__bullets)
 
-    def hits(self, ukrainian):
+    def hits(self, ukrainian):  # bala colidir com o ukranian remove a bala da lista
         for bullet in self.__bullets:
             if bullet.colides_with(ukrainian):
                 self.__bullets.remove(bullet)
@@ -73,7 +74,7 @@ class Russian:
         if self.__russians:  # se o valor da lista for maior que 0 é porque tem e então nao retorna nada
             return True
 
-        for x in range(3):
+        for x in range(2):
             russian = Russian()
             self.__russians.append(russian)
 
@@ -110,6 +111,8 @@ class Russian:
 
     def reset(self):
         self.__deaths = 0
+        self.__russians.clear()
+        self.generate_russian()
 
     def limit_boundaries(self):
         if self.__x < 0:
