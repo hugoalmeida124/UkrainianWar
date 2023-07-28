@@ -17,6 +17,9 @@ class Ukrainian:
         self.__direction = 'right'
         self.__hearts = 3
 
+    def direction(self):
+        return self.__direction
+
     def move(self, direction):
         self.__direction = direction
 
@@ -97,8 +100,13 @@ class Ukrainian:
     def hearts(self):
         return self.__hearts
 
+    def get_hearts(self):
+        self.__hearts += 1
+
     def lose_hearts(self):
         self.__hearts -= 1
 
     def no_more_hearts(self):
         return self.__hearts == 0
+
+

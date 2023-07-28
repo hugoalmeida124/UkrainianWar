@@ -45,7 +45,7 @@ class Reload_manager:
         surface.blit(text, (10, 80))
 
         img = Img.BULLET_RECHARGE
-        if self.__score == 3:
+        """if self.__score == 3:
             surface.blit(img, (250, 60))
             surface.blit(img, (260, 60))
             surface.blit(img, (270, 60))
@@ -53,7 +53,10 @@ class Reload_manager:
             surface.blit(img, (250, 60))
             surface.blit(img, (260, 60))
         elif self.__score == 1:
-            surface.blit(img, (250, 60))
+            surface.blit(img, (250, 60))"""
+
+        for x in range(self.__score):
+            surface.blit(img, [150 + (10 * x), 60])
 
     def reset(self):
-        self.__score = 0
+        self.__score = 3

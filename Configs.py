@@ -33,6 +33,7 @@ class Sound:
     MENU_CLICK = pygame.mixer.Sound("sounds/menu_click.wav")
     LVL_UP = pygame.mixer.Sound("sounds/LVL_UP.mp3")
     RELOAD = pygame.mixer.Sound("sounds/RELOAD.ogg")
+    WIN = pygame.mixer.Sound("sounds/Winner.mp3")
 
 
 class Font:
