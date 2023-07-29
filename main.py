@@ -93,7 +93,7 @@ while run:
         screen.blit(text, (560, 100))
 
     elif view == 2:
-        screen.blit(Img.BACKGROUND_GAME, [0, 0])  # BACKGROUND
+        screen.blit(Img.BACKGROUND_GAME_1, [0, 0])  # BACKGROUND
 
         hearts = ukrainian.hearts
         deaths = russians.get_score()
@@ -103,6 +103,7 @@ while run:
             russians.generate_russian(1)
 
         elif deaths < 10:  # lvl2
+            #screen.blit(Img.BACKGROUND_GAME_2, [0, 0])  # BACKGROUND lvl2
             text = Font.MAIN_FONT.render(F"LEVEL 2", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(2)
@@ -110,6 +111,7 @@ while run:
                 lvl_up = False #reiniciar a variavel que controla o som de lvl up
 
         elif deaths < 20:  # lvl3
+            #screen.blit(Img.BACKGROUND_GAME_3, [0, 0])  # BACKGROUND lvl3
             text = Font.MAIN_FONT.render(F"LEVEL 3", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(3)
@@ -121,6 +123,7 @@ while run:
                 lvl_up = False
 
         elif deaths < 30:  # lvl4
+            #screen.blit(Img.BACKGROUND_GAME_4, [0, 0])  # BACKGROUND lvl4
             text = Font.MAIN_FONT.render(F"LEVEL 4", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(4)

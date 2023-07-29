@@ -11,7 +11,10 @@ class Window:
 
 
 class Img:
-    BACKGROUND_GAME = pygame.image.load("imgs/background.png")
+    BACKGROUND_GAME_1 = pygame.image.load("imgs/background.png")
+    BACKGROUND_GAME_2 = pygame.image.load("imgs/background2.png")
+    BACKGROUND_GAME_3 = pygame.image.load("imgs/background4.png")
+    BACKGROUND_GAME_4 = pygame.image.load("imgs/background3.png")
     BACKGROUND_MAIN = pygame.image.load("imgs/background_main.png")
     UKRAINIAN_RIGHT = pygame.image.load("imgs/up_soldier.png")
     UKRAINIAN_LEFT = pygame.image.load("imgs/up_soldier-left.png")
