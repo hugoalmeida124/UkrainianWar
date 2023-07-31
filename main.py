@@ -3,12 +3,15 @@ from pygame.locals import *
 
 import Buttons
 import time
+
 from Configs import *
 from Buttons import Button
 from Ukrainians import Ukrainian
 from Russians import Russian
 from Bullet import Bullet
 from Reload_manager import Reload_manager
+from About import *
+from Paused import pause
 
 pygame.init()
 screen = pygame.display.set_mode([Window.WIDTH, Window.HEIGHT])
@@ -19,8 +22,10 @@ clock = pygame.time.Clock()
 Sound.AMBIENCE.play(loops=-1)
 Sound.AMBIENCE.set_volume(0.10)
 
+# variables
 button_play = Button(600, 300, Buttons.BUTTON_GREEN)
-button_exit = Button(605, 450, Buttons.BUTTON_RED)
+button_about = Button(600, 450, Buttons.BUTTON_ABOUT)
+button_exit = Button(608, 590, Buttons.BUTTON_RED)
 button_restart = Button(520, 400, Buttons.BUTTON_BLUE)
 button_home = Button(1210, 600, Buttons.BUTTON_HOME)
 ukrainian = Ukrainian(100, 645)
@@ -29,7 +34,16 @@ lvl_up = False
 russians = Russian()
 reload = Reload_manager()
 
-view = 1  # Tela de jogo
+
+class Frame:
+    HOME = 1
+    GAME = 2
+    GAMEOVER = 3
+    ABOUT = 4
+    WINNER = 5
+
+
+view = Frame.HOME  # Tela de jogo
 
 run = True
 while run:
@@ -41,14 +55,14 @@ while run:
         if event.type == pygame.QUIT:
             run = False
             break
-        elif event.type == MOUSEBUTTONDOWN:
+        elif view == Frame.HOME and event.type == MOUSEBUTTONDOWN:
             if event.button == 1:  # Botã
                 # o esquerdo do mouse
                 mouse_pos = pygame.mouse.get_pos()
                 if button_play.rect.collidepoint(mouse_pos):
                     # Código para mudar para a tela de jogo quando o botão Play for clicado
                     print("Botão Play clicado!")
-                    view = 2
+                    view = Frame.GAME
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
 
@@ -61,6 +75,40 @@ while run:
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
                     break
+
+                if button_about.rect.collidepoint(mouse_pos):
+                    Sound.MENU_CLICK.play(loops=0)
+                    Sound.MENU_CLICK.set_volume(0.30)
+                    view = Frame.ABOUT
+
+        elif view == Frame.ABOUT and event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if button_home.rect.collidepoint(mouse_pos):
+                    Sound.MENU_CLICK.play(loops=0)
+                    Sound.MENU_CLICK.set_volume(0.30)
+                    ukrainian.reset()
+                    russians.reset()
+                    reload.reset()
+                    view = Frame.HOME
+
+        elif view == Frame.WINNER and event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if button_home.rect.collidepoint(mouse_pos):
+                    Sound.MENU_CLICK.play(loops=0)
+                    Sound.MENU_CLICK.set_volume(0.30)
+                    ukrainian.reset()
+                    russians.reset()
+                    reload.reset()
+                    view = Frame.HOME
+
+        elif view == Frame.GAMEOVER and event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+
                 if button_restart.rect.collidepoint(mouse_pos):
                     # COLOCAR OS RESET
                     print("restart cliclado")
@@ -70,14 +118,10 @@ while run:
 
                     Sound.MENU_CLICK.play(loops=0)
                     Sound.MENU_CLICK.set_volume(0.30)
-                    view = 2
-                if button_home.rect.collidepoint(mouse_pos):
-                    view = 1
-                    ukrainian.reset()
-                    russians.reset()
-                    reload.reset()
 
-        elif event.type == KEYDOWN:
+                    view = Frame.GAME
+
+        elif event.type == KEYDOWN and view == Frame.GAME:
             score = reload.get_score()
             if event.key == K_SPACE and score > 0:
                 ukrainian.shoot()
@@ -86,13 +130,17 @@ while run:
                 if direction == "right" or direction == "up":
                     reload.lose_score()
 
-    if view == 1:
+            if event.key == K_ESCAPE:
+                pause(screen)
+
+    if view == Frame.HOME:
         button_play.draw(screen)
         button_exit.draw(screen)
+        button_about.draw(screen)
         text = Font.MAIN_FONT.render(F"UKRAINIAN WAR", True, [255, 255, 255], None)
         screen.blit(text, (560, 100))
 
-    elif view == 2:
+    elif view == Frame.GAME:
         screen.blit(Img.BACKGROUND_GAME_1, [0, 0])  # BACKGROUND
 
         hearts = ukrainian.hearts
@@ -103,15 +151,15 @@ while run:
             russians.generate_russian(1)
 
         elif deaths < 10:  # lvl2
-            #screen.blit(Img.BACKGROUND_GAME_2, [0, 0])  # BACKGROUND lvl2
+            screen.blit(Img.BACKGROUND_GAME_2, [0, 0])  # BACKGROUND lvl2
             text = Font.MAIN_FONT.render(F"LEVEL 2", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(2)
             if deaths == 9:
-                lvl_up = False #reiniciar a variavel que controla o som de lvl up
+                lvl_up = False  # reiniciar a variavel que controla o som de lvl up
 
         elif deaths < 20:  # lvl3
-            #screen.blit(Img.BACKGROUND_GAME_3, [0, 0])  # BACKGROUND lvl3
+            screen.blit(Img.BACKGROUND_GAME_3, [0, 0])  # BACKGROUND lvl3
             text = Font.MAIN_FONT.render(F"LEVEL 3", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(3)
@@ -123,7 +171,7 @@ while run:
                 lvl_up = False
 
         elif deaths < 30:  # lvl4
-            #screen.blit(Img.BACKGROUND_GAME_4, [0, 0])  # BACKGROUND lvl4
+            screen.blit(Img.BACKGROUND_GAME_4, [0, 0])  # BACKGROUND lvl4
             text = Font.MAIN_FONT.render(F"LEVEL 4", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(4)
@@ -136,6 +184,7 @@ while run:
                 lvl_up = False
 
         elif deaths < 50:  # lvl5
+            screen.blit(Img.BACKGROUND_GAME_4, [0, 0])  # BACKGROUND lvl5
             text = Font.MAIN_FONT.render(F"LEVEL 4", True, [255, 255, 255], None)
             screen.blit(text, (650, 50))
             russians.generate_russian(5)
@@ -191,6 +240,11 @@ while run:
             Sound.HIT.play(loops=0)
             Sound.HIT.set_volume(0.10)
 
+        if russians.colides_with(ukrainian):  # perder as vidas todas caso o russo colida com o player
+            ukrainian.lose_all_hearts()
+            Sound.HIT_2.play(loops=0)
+            Sound.HIT_2.set_volume(0.10)
+
         if ukrainian.hits(russians):
             russians.took_shot()
             Sound.HIT_2.play(loops=0)
@@ -203,20 +257,26 @@ while run:
 
         pygame.display.update()
 
-    elif view == 3:
+    elif view == Frame.GAMEOVER:
         text = Font.MAIN_FONT.render(F"GAMEOVER", True, [255, 255, 255], None)
         screen.blit(text, (640, 200))
         text2 = Font.SECOND_FONT.render(F"HIGHEST SCORE: {russians.get_score()}", True, [255, 255, 255], None)
         screen.blit(text2, (700, 350))
         button_restart.draw(screen)
 
-    elif view == 4:
+    elif view == Frame.WINNER:
         text = Font.MAIN_FONT.render(F"WINNER!", True, [255, 255, 255], None)
         screen.blit(text, (680, 200))
         text2 = Font.SECOND_FONT.render(F"Slava Ukraini!", True, [255, 255, 255], None)
         screen.blit(text2, (710, 350))
         button_home.draw(screen)
 
+    elif view == Frame.ABOUT:
+        button_home.draw(screen)
+        text = Font.MAIN_FONT.render(F"UKRAINIAN WAR", True, [255, 255, 255], None)
+        screen.blit(text, (560, 30))
+
+        draw_text_with_line_breaks(text_about_1, font, (255, 255, 255), 50, 150)
 
     pygame.display.update()
 

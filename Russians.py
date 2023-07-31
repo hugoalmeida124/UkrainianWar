@@ -8,7 +8,7 @@ import math
 
 class Russian:
     def __init__(self):
-        self.__x = random.randint(1400, 1600)
+        self.__x = random.randint(1400, 1500)
         self.__y = 645
         self.__img = Img.RUSSIAN
         self.__deaths = 0
@@ -110,7 +110,8 @@ class Russian:
         # Verificar colisão
 
     def colides_with(self, who):
-        return who.get_overlaping_area(self.__img, self.__x, self.__y) > 0
+        for russian in self.__russians:
+            return who.get_overlaping_area(russian.__img, russian.__x, russian.__y) > 0
 
     def took_shot(self):
         for russian in self.__russians:  # verificar cada russo na lista se colide com a bala

@@ -3,6 +3,7 @@ from Configs import *
 
 BUTTON_RED = pygame.image.load("imgs/red_button.png")
 BUTTON_HOME = pygame.image.load("imgs/green_button.png")
+BUTTON_ABOUT = pygame.image.load("imgs/green_button.png")
 BUTTON_BLUE = pygame.image.load("imgs/blue_button.png")
 BUTTON_GREEN = pygame.image.load("imgs/green_button.png")
 
@@ -29,9 +30,12 @@ class Button:
         if self.img == BUTTON_GREEN:
             text = Font.MAIN_FONT.render(F"PLAY", True, [255, 255, 255], None)
             janela.blit(text, (715, 310))
+        elif self.img == BUTTON_ABOUT:
+            text = Font.MAIN_FONT.render(F"ABOUT", True, [255, 255, 255], None)
+            janela.blit(text, (685, 460))
         elif self.img == BUTTON_RED:
             text = Font.MAIN_FONT.render(F"EXIT", True, [255, 255, 255], None)
-            janela.blit(text, (725, 460))
+            janela.blit(text, (728, 600))
         elif self.img == BUTTON_BLUE:
             text = Font.MAIN_FONT.render(F"RESTART", True, [255, 255, 255], None)
             janela.blit(text, (680, 410))

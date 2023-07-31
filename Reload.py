@@ -12,7 +12,7 @@ class Reload:
         self.random_position()
 
     def random_position(self):
-        self.__x = random.randint(250, 1200)
+        self.__x = random.randint(250, 1000)
 
     def float(self):
         if self.__is_up:

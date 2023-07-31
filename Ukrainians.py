@@ -14,6 +14,7 @@ class Ukrainian:
         self.__speed = 5
         self.__img = Img.UKRAINIAN_RIGHT
         self.__bullets = []
+        #total_ammunition = 3
         self.__direction = 'right'
         self.__hearts = 3
 
@@ -105,6 +106,9 @@ class Ukrainian:
 
     def lose_hearts(self):
         self.__hearts -= 1
+
+    def lose_all_hearts(self):
+        self.__hearts = 0
 
     def no_more_hearts(self):
         return self.__hearts == 0
