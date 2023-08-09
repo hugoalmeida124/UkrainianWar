@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-
 import Buttons
 import time
 
@@ -121,6 +120,14 @@ while run:
 
                     view = Frame.GAME
 
+                if button_home.rect.collidepoint(mouse_pos):
+                    Sound.MENU_CLICK.play(loops=0)
+                    Sound.MENU_CLICK.set_volume(0.30)
+                    ukrainian.reset()
+                    russians.reset()
+                    reload.reset()
+                    view = Frame.HOME
+
         elif event.type == KEYDOWN and view == Frame.GAME:
             score = reload.get_score()
             if event.key == K_SPACE and score > 0:
@@ -196,7 +203,7 @@ while run:
         if deaths == 50:
             Sound.WIN.play()
             Sound.LVL_UP.set_volume(0.20)
-            view = 4  # view de vencedor
+            view = Frame.WINNER  # view de vencedor
 
         if not lvl_up and russians.level_up():  # tocar som de lvlup
             Sound.LVL_UP.play(maxtime=3000)
@@ -263,6 +270,7 @@ while run:
         text2 = Font.SECOND_FONT.render(F"HIGHEST SCORE: {russians.get_score()}", True, [255, 255, 255], None)
         screen.blit(text2, (700, 350))
         button_restart.draw(screen)
+        button_home.draw(screen)
 
     elif view == Frame.WINNER:
         text = Font.MAIN_FONT.render(F"WINNER!", True, [255, 255, 255], None)
